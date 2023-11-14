@@ -1,7 +1,7 @@
 {
   "name": "@amplication/plugin-bitwarden-secret-manager",
   "version": "0.0.1",
-  "description": "Description of your plugin",
+  "description": "Amplication plugin to manage secrets using Bitwarden-secret-manager",
   "main": "dist/index.js",
   "scripts": {
     "prepublishOnly": "npm run build",
@@ -10,7 +10,7 @@
     "prebuild": "rimraf dist",
     "format:write": "prettier --write \"**/*.{js,ts}\""
   },
-  "author": "Amplication Contributor",
+  "author": "ChenemiKen <chenemiken15@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
     "@amplication/code-gen-types": "^2.0.17",
@@ -50,5 +50,6 @@
       "**/*.(t|j)s"
     ],
     "testEnvironment": "node"
-  }
+  },
+  "keywords": ["amplication", "bitwarden", "secret-manager"]
 }

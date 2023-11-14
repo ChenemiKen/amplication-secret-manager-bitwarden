@@ -1,5 +1,5 @@
 {
-  "name": "plugin-{your-plugin-name}",
+  "name": "@amplication/plugin-bitwarden-secret-manager",
   "version": "0.0.1",
   "description": "Description of your plugin",
   "main": "dist/index.js",

@@ -1,3 +1,4 @@
+import * as ts from "typescript"
 import { PluginInstallation } from "@amplication/code-gen-types";
 import { name as PackageName } from "../package.json";
 import { Settings } from "./types";
@@ -16,6 +17,30 @@ export const getPluginSettings = (
     ...defaultSettings,
     ...userSettings,
   };
+  console.log("SETTING: ", settings)
 
   return settings;
 };
+
+function genEnumMembersFromArray(arr:string[]){
+  return arr.map((obj:string) => {
+    return ts.factory.createEnumMember(
+      obj
+    )
+  })
+}
+
+export function genSecretsEnum(secretsName:string[]): string {
+  const secretsEnumIdentifier = ts.factory.createIdentifier("Secrets")
+
+  const secretsEnum = ts.factory.createEnumDeclaration(
+      [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+      secretsEnumIdentifier,
+      genEnumMembersFromArray(secretsName)
+  )
+
+  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
+
+  //@ts-ignore
+  return printer.printList(ts.ListFormat.MultiLine, [secretsEnum])
+}

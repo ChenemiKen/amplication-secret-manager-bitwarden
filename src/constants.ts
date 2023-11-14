@@ -1,11 +1,14 @@
-/**
- * @Amplication example constants file.
- * Add all your constants here.
- */
+import { VariableDictionary } from "@amplication/code-gen-types"
 
-import { join } from "path";
+export const dependencies = {
+    dependencies: {
+        "@bitwarden/sdk-napi": "^0.3.1"
+    },
+}
 
-export const ExampleConst = "example";
-
-export const staticsPath = join(__dirname, "static");
-export const templatesPath = join(__dirname, "templates");
+export const envVariables: VariableDictionary = [
+    {BITWARDEN_ACCESS_TOKEN: ""},
+    {BITWARDEN_ORGANISATION_ID: ""},
+    {BITWARDEN_API_URL: "https://api.bitwarden.com"},
+    {BITWARDEN_IDENTITY_URL: "https://identity.bitwarden.com"},
+]

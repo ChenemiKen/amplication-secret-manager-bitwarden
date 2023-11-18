@@ -1,5 +1,5 @@
 import * as ts from "typescript"
-import { PluginInstallation } from "@amplication/code-gen-types";
+import { PluginInstallation, SecretsNameKey } from "@amplication/code-gen-types";
 import { name as PackageName } from "../package.json";
 import { Settings } from "./types";
 import defaultSettings from "../.amplicationrc.json";
@@ -22,25 +22,16 @@ export const getPluginSettings = (
   return settings;
 };
 
-function genEnumMembersFromArray(arr:string[]){
-  return arr.map((obj:string) => {
-    return ts.factory.createEnumMember(
-      obj
-    )
-  })
-}
+export function secretNamesParser(secretNames: string[]): SecretsNameKey[] {
+  var secretsParsed: SecretsNameKey[] = [];
 
-export function genSecretsEnum(secretsName:string[]): string {
-  const secretsEnumIdentifier = ts.factory.createIdentifier("Secrets")
+  secretNames.forEach((secretName) => {
 
-  const secretsEnum = ts.factory.createEnumDeclaration(
-      [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
-      secretsEnumIdentifier,
-      genEnumMembersFromArray(secretsName)
-  )
+    secretsParsed.push({
+      name:secretName,
+      key:secretName,
+    });
+  });
 
-  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
-
-  //@ts-ignore
-  return printer.printList(ts.ListFormat.MultiLine, [secretsEnum])
+  return secretsParsed;
 }

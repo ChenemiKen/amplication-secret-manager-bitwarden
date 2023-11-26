@@ -40,15 +40,23 @@ class BitWardenSecretsManagerPlugin implements AmplicationPlugin {
     return eventParams
   }
 
-  beforeCreateServerDotEnv(_:DsgContext, eventParams: CreateServerDotEnvParams)
+  beforeCreateServerDotEnv(context:DsgContext, eventParams: CreateServerDotEnvParams)
   : CreateServerDotEnvParams {
-    eventParams.envVariables = [...eventParams.envVariables, ...envVariables]
+    const {BITWARDEN_ACCESS_TOKEN, BITWARDEN_ORGANISATION_ID} = getPluginSettings(context.pluginInstallations).settings
+    eventParams.envVariables = [
+      ...eventParams.envVariables,
+      ...[
+        { BITWARDEN_ACCESS_TOKEN: BITWARDEN_ACCESS_TOKEN },
+        { BITWARDEN_ORGANISATION_ID: BITWARDEN_ORGANISATION_ID },
+      ],
+      ...envVariables
+    ]
     return eventParams
   }
 
   async AfterCreateServer(context: DsgContext, _: CreateServerParams, modules: ModuleMap)
   : Promise<ModuleMap> {
-    const {fetchMode, secretNames} = getPluginSettings(context.pluginInstallations).settings
+    const {fetchMode} = getPluginSettings(context.pluginInstallations).settings
     const staticPath = resolve(__dirname, "static", fetchMode.toLowerCase())
 
     const staticFiles =  await context.utils.importStaticModules(
